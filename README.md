@@ -1,11 +1,28 @@
 # Rust/Nix Base Server
 
-this project is a default/template implementation of web server in rust with my
-personal default environment and way of developing.
+inspired by applications like
+[Backstage](https://github.com/backstage/backstage),[Homepage](https://github.com/benphelps/homepage)
+and [Port](https://www.getport.io/)
+this project wants to create a place where different types of jobs in the same
+company finds all the content necessary in a easy and productivity way.
 
-Here i want to make a template where i have the most commons integration in a
-web service system, like: ws, webrtc, multiples types of dbs, caching, message
-queueing, serder-side rendering, file transfering, tracing, profiling and etc.
+## Why this?
+I always have a problem when a new employer enters in the company trying to
+remember all the accesses i have to give, shows all the links we have and where
+is th documentations projects & etc, and if they works in another area
+which is not tech related stuff, it becomes even harder, so you already imagine
+this project purpose.
+
+## Ideas
+- [] HomePage customization per machine or user (still don't know for sure)
+- [] HomePage default theme by position
+- [] RBAC
+- [] Widget scheme
+- [] Theme scheme
+- [] command system [something like this](https://github.com/excalith/excalith-start-page)
+- [] search system (sevices, cluster, commands)
+- [] event notification system (for observability, e.g. payment system out of air)
+
 
 ## start project.
 

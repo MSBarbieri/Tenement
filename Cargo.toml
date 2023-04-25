@@ -1,5 +1,5 @@
 [package]
-name = "backend-rust-axum"
+name = "tenement-controller"
 version = "0.1.0"
 edition = "2021"
 
@@ -36,6 +36,9 @@ opentelemetry-otlp = { version = "0.11.0",features = [
   "grpc-tonic",
   "http-proto"
 ]} 
+kube = { version = "0.82.2", features = ["runtime", "derive"] }
+k8s-openapi = { version = "0.18.0", features = ["v1_26"] }
+anyhow = "1.0.70"
 
 
 [features]

@@ -39,7 +39,6 @@ where
 {
     Box::new(
         tracing_subscriber::fmt::layer()
-            .json()
             .with_span_events(FmtSpan::NEW | FmtSpan::CLOSE)
             .with_timer(tracing_subscriber::fmt::time::uptime()),
     )

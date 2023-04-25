@@ -65,6 +65,7 @@
           nixpkgs-fmt
           openssl
           protobuf
+          tilt
         ];
 
         RUST_LOG = "debug";
