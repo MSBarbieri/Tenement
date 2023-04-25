@@ -66,6 +66,7 @@
           openssl
           protobuf
           tilt
+          kind
         ];
 
         RUST_LOG = "debug";
