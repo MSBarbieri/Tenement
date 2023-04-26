@@ -18,7 +18,7 @@ pub struct Cli {
     pub num_threads: usize,
 
     /// Log/Tracing level
-    #[arg(value_enum, short, long, default_value_t = LogLevel::Debug)]
+    #[arg(value_enum, short, long, default_value_t = LogLevel::Info)]
     pub log_level: LogLevel,
 
     /// server address

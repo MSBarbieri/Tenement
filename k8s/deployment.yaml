@@ -1,4 +1,44 @@
 ---
+# Scoped service account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tenement
+  namespace: tenement
+automountServiceAccountToken: true
+
+---
+# Access for the service account (cluster scoped list)
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: tenement 
+rules:
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - services
+    verbs:
+    - get
+    - watch
+    - list
+
+---
+# Binding the role to the account
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: tenement
+subjects:
+- kind: ServiceAccount
+  name: tenement
+  namespace: tenement
+roleRef:
+  kind: ClusterRole
+  name: tenement
+  apiGroup: rbac.authorization.k8s.io
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -14,9 +54,17 @@ spec:
       labels:
         app: tenement-controller
     spec:
+      serviceAccountName: tenement
       containers:
         - name: tenement-controller
           image: tenement-controller
           ports:
-            - containerPort: 3000
-
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
