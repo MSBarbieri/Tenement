@@ -29,7 +29,7 @@ CMD ["./tenement-controller"]
 
 # ---- DEV ----
 FROM rust:1.69 as dev
-RUN USER=root cargo new --bin tenement-controller
+RUN cargo new --bin tenement-controller
 WORKDIR /tenement-controller
 COPY ./Cargo.toml ./Cargo.toml
 COPY ./Cargo.lock ./Cargo.lock
