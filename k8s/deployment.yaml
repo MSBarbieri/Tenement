@@ -3,15 +3,15 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: tenement
-  namespace: tenement
+  name: hubify
+  namespace: hubify
 automountServiceAccountToken: true
 ---
 # Access for the service account (cluster scoped list)
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: tenement 
+  name: hubify 
 rules:
   - apiGroups:
     - apps
@@ -28,35 +28,35 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: tenement
+  name: hubify
 subjects:
 - kind: ServiceAccount
-  name: tenement
-  namespace: tenement
+  name: hubify
+  namespace: hubify
 roleRef:
   kind: ClusterRole
-  name: tenement
+  name: hubify
   apiGroup: rbac.authorization.k8s.io
 ---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: tenement-controller
-  namespace: tenement
+  name: hubify-controller
+  namespace: hubify
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tenement-controller
+      app: hubify-controller
   template:
     metadata:
       labels:
-        app: tenement-controller
+        app: hubify-controller
     spec:
-      serviceAccountName: tenement
+      serviceAccountName: hubify
       containers:
-        - name: tenement-controller
-          image: tenement-controller
+        - name: hubify-controller
+          image: hubify-controller
           ports:
             - name: http
               containerPort: 3000
@@ -72,7 +72,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: frontend 
-  namespace: tenement
+  namespace: hubify
 spec:
   replicas: 1
   selector:

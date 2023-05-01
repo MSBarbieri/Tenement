@@ -860,6 +860,37 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c4a1e36c821dbe04574f602848a19f742f4fb3c98d40449f11bcad18d6b17421"
 
 [[package]]
+name = "hubify-controller"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "axum",
+ "axum-tracing-opentelemetry",
+ "backoff",
+ "cfg-if",
+ "clap",
+ "env_logger 0.10.0",
+ "futures",
+ "hyper",
+ "k8s-openapi",
+ "kube",
+ "log",
+ "opentelemetry",
+ "opentelemetry-otlp",
+ "pretty_env_logger",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+ "tower",
+ "tower-http 0.4.0",
+ "tracing",
+ "tracing-opentelemetry",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "humantime"
 version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2136,37 +2167,6 @@ dependencies = [
  "redox_syscall 0.3.5",
  "rustix",
  "windows-sys 0.45.0",
-]
-
-[[package]]
-name = "tenement-controller"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "axum",
- "axum-tracing-opentelemetry",
- "backoff",
- "cfg-if",
- "clap",
- "env_logger 0.10.0",
- "futures",
- "hyper",
- "k8s-openapi",
- "kube",
- "log",
- "opentelemetry",
- "opentelemetry-otlp",
- "pretty_env_logger",
- "reqwest",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
- "tower",
- "tower-http 0.4.0",
- "tracing",
- "tracing-opentelemetry",
- "tracing-subscriber",
 ]
 
 [[package]]
