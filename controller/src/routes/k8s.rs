@@ -17,7 +17,7 @@ pub type Result<T> = std::result::Result<T, K8SERROR>;
 
 #[instrument]
 pub async fn get_services() -> Result<Json<String>> {
-    Ok(Json("Hello World".to_string()))
+    Ok(Json("Hello k8s".to_string()))
 }
 
 impl IntoResponse for K8SERROR {
