@@ -34,7 +34,7 @@ pub enum Scripts {
         about = "Create kind cluster,and container registry"
     )]
     CreateCluster {
-        #[clap(long, short, default_value = "tenement")]
+        #[clap(long, short, default_value = "hubify")]
         name: String,
         #[clap(long, default_value = "registry")]
         registry_name: String,

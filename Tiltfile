@@ -14,9 +14,9 @@ print("""
 
 
 k8s_yaml(kustomize('k8s'))
-k8s_resource('tenement-controller',
+k8s_resource('hubify-controller',
              port_forwards=['3000:3000'],
-             labels=['tenement-controller'],
+             labels=['hubify-controller'],
 )
 
 k8s_resource('frontend',
@@ -25,14 +25,14 @@ k8s_resource('frontend',
 )
 
 docker_build(
-  'tenement-controller',
+  'hubify-controller',
   context='./controller',
   target='dev',
   only=['src','Cargo.toml','Cargo.lock'],
   live_update=[
-    sync('./controller/src', '/tenement-controller/src'),
-    sync('./controller/Cargo.toml', '/tenement-controller/Cargo.toml'),
-    sync('./controller/Cargo.lock', '/tenement-controller/Cargo.lock'),
+    sync('./controller/src', '/hubify-controller/src'),
+    sync('./controller/Cargo.toml', '/hubify-controller/Cargo.toml'),
+    sync('./controller/Cargo.lock', '/hubify-controller/Cargo.lock'),
   ])
 
 docker_build(

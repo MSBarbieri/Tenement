@@ -1,5 +1,5 @@
 [package]
-name = "tenement-controller"
+name = "hubify-controller"
 version = "0.1.0"
 edition = "2021"
 

@@ -1,7 +1,7 @@
 use crate::routes::configure_routes;
 use axum::Router;
-use futures::{future, StreamExt};
-use k8s_openapi::api::{apps::v1::Deployment, core::v1::Service};
+use futures::StreamExt;
+use k8s_openapi::api::apps::v1::Deployment;
 use kube::{
     runtime::{reflector, watcher, WatchStreamExt},
     Api, Client, ResourceExt,

@@ -1,10 +1,4 @@
 use axum::{http::StatusCode, response::IntoResponse, routing::get, Json, Router};
-use k8s_openapi::api::core::v1::Service;
-use kube::{
-    api::ListParams,
-    core::{ObjectList, PartialObjectMeta},
-    Api, Client,
-};
 use thiserror::Error;
 use tracing::*;
 
@@ -17,7 +11,7 @@ pub type Result<T> = std::result::Result<T, K8SERROR>;
 
 #[instrument]
 pub async fn get_services() -> Result<Json<String>> {
-    Ok(Json("Hello World".to_string()))
+    Ok(Json("Hello k8s".to_string()))
 }
 
 impl IntoResponse for K8SERROR {

@@ -45,12 +45,14 @@ pub enum Commands {
 pub fn watch(args: WatchArgs) -> Result<()> {
     match args {
         WatchArgs::Tilt => {
-            if !crate::utils::has_cluster("tenement")? {
+            if !crate::utils::has_cluster("hubify")? {
                 log::warn!("cluster not found, creating one");
                 print!("---------------");
-                crate::scripts::create_cluster("tenement", "registry", "5000")?;
+                crate::scripts::create_cluster("hubify", "registry", "5000")?;
                 log::info!("End of cluster creation");
                 print!("---------------");
+            } else {
+                log::info!("Cluster found");
             }
             // check if Tiltfile file exists rollback one directory and check again
             let tiltfile = Path::new("./Tiltfile");
