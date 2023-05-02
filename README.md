@@ -1,17 +1,22 @@
-# Rust/Nix Base Server
+# Hubify
+
+<!--Badges-->
+![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/MSbarbieri/hubify/core.yml?branch=main&style=for-the-badge)
+![Codecov](https://img.shields.io/codecov/c/github/msbarbieri/hubify?style=for-the-badge)
+<!--End Badges-->
 
 inspired by applications like
 [Backstage](https://github.com/backstage/backstage),[Homepage](https://github.com/benphelps/homepage)
 and [Port](https://www.getport.io/)
 this project wants to create a place where different types of jobs in the same
-company finds all the content necessary in a easy and productivity way.
+company finds all the content necessary in a easy, productive and nice way.
 
 ## Why this?
 I always have a problem when a new employer enters in the company trying to
 remember all the accesses i have to give, shows all the links we have and where
-is th documentations projects & etc, and if they works in another area
-which is not tech related stuff, it becomes even harder, so you already imagine
-this project purpose.
+is th documentations projects and etc, make te onboard in always problematic,
+and if they works in another area which is not tech related stuff, it becomes
+even harder, so you already imagine this project purpose.
 
 ## Ideas
 - [] HomePage customization per machine or user (still don't know for sure)
