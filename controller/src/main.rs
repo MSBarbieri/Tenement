@@ -1,4 +1,6 @@
 mod cli;
+mod config;
+mod crd;
 mod logger;
 mod routes;
 mod server;
@@ -22,11 +24,15 @@ pub enum StartError {
 
 #[tokio::main]
 async fn main() -> Result<(), StartError> {
-    let cli = Cli::parse();
-    cli.validate()?;
-    tracer::setup_tracing(&cli)?;
+    match Cli::parse() {
+        Cli::Start(cli) => {
+            let mut config = cli.into();
+            tracer::setup_tracing(&mut config)?;
 
-    tracing::debug!("Cli Validated, starting server");
-    server::create_server(cli).await?;
+            tracing::debug!("Cli Validated, starting server");
+            server::create_server(config).await?;
+        }
+        Cli::Create(commands) => {}
+    };
     Ok(())
 }

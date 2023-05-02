@@ -1,7 +1,7 @@
 use cfg_if::cfg_if;
 use thiserror::Error;
 
-use crate::cli::Cli;
+use crate::config::Config;
 cfg_if! {
 if #[cfg(feature = "trace")] {
 use opentelemetry::sdk::trace::Tracer;
@@ -44,10 +44,10 @@ where
     )
 }
 
-pub fn build_loglevel_filter_layer(cli: &Cli) -> tracing_subscriber::filter::EnvFilter {
+pub fn build_loglevel_filter_layer(config: &Config) -> tracing_subscriber::filter::EnvFilter {
     // filter what is output on log (fmt)
     // std::env::set_var("RUST_LOG", "warn,axum_tracing_opentelemetry=info,otel=debug");
-    let log_level = cli.log_level.to_string();
+    let log_level = config.log_level.to_string();
     std::env::set_var(
         "RUST_LOG",
         format!(
@@ -83,7 +83,7 @@ fn infer_protocol_and_endpoint(
     (protocol, endpoint)
 }
 
-pub fn init_tracer<F>(cli: &Cli, resource: Resource, transform: F) -> Result<Tracer, TraceError>
+pub fn init_tracer<F>(config: &Config, resource: Resource, transform: F) -> Result<Tracer, TraceError>
 where
     F: FnOnce(opentelemetry_otlp::OtlpTracePipeline) -> opentelemetry_otlp::OtlpTracePipeline,
 {
@@ -91,7 +91,7 @@ where
     use opentelemetry_otlp::WithExportConfig;
 
     opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
-    let (protocol, endpoint) = infer_protocol_and_endpoint((None, Some(cli.otlp_url.clone())));
+    let (protocol, endpoint) = infer_protocol_and_endpoint((None, Some(config.otlp_url.clone().unwrap())));
     tracing::debug!(target: "otel::setup", OTEL_EXPORTER_OTLP_ENDPOINT = endpoint);
     tracing::debug!(target: "otel::setup", OTEL_EXPORTER_OTLP_PROTOCOL = protocol);
     let exporter: SpanExporterBuilder = match protocol.as_str() {
@@ -118,37 +118,36 @@ where
     pipeline.install_batch(opentelemetry::runtime::Tokio)
 }
 
-pub fn build_otel_layer<S>(cli: &Cli) -> Result<OpenTelemetryLayer<S, Tracer>, BoxError>
+pub fn build_otel_layer<S>(config: &Config) -> Result<OpenTelemetryLayer<S, Tracer>, BoxError>
 where
     S: Subscriber + for<'a> LookupSpan<'a>,
 {
     use axum_tracing_opentelemetry::{init_propagator, otlp, resource::DetectResource};
     let otel_rsrc = DetectResource::default().build();
-    let otel_tracer = init_tracer(cli, otel_rsrc, otlp::identity)?;
+    let otel_tracer = init_tracer(config, otel_rsrc, otlp::identity)?;
     init_propagator()?;
     Ok(tracing_opentelemetry::layer().with_tracer(otel_tracer))
 }
 }
 }
-pub fn setup_tracing(cli: &Cli) -> Result<(), TracingError> {
-    cfg_if::cfg_if! {
-    if #[cfg(feature = "trace")] {
-    let subscriber = tracing_subscriber::registry()
-        .with(build_loglevel_filter_layer(cli))
-        .with(build_logger_text());
-    let _guard = tracing::subscriber::set_default(subscriber);
-    tracing::info!("init logging & tracing");
 
-    let subscriber = tracing_subscriber::registry()
-        .with(build_otel_layer(cli)?)
-        .with(build_loglevel_filter_layer(cli))
-        .with(build_logger_text());
-    tracing::subscriber::set_global_default(subscriber)?;
+pub fn setup_tracing(config: &mut Config) -> Result<(), TracingError> {
+    if config.otlp_url.is_some() {
+        let subscriber = tracing_subscriber::registry()
+            .with(build_loglevel_filter_layer(config))
+            .with(build_logger_text());
+        let _guard = tracing::subscriber::set_default(subscriber);
+        tracing::info!("init logging & tracing");
+
+        let subscriber = tracing_subscriber::registry()
+            .with(build_otel_layer(config)?)
+            .with(build_loglevel_filter_layer(config))
+            .with(build_logger_text());
+        tracing::subscriber::set_global_default(subscriber)?;
     } else {
-    tracing_subscriber::FmtSubscriber::builder()
-        .with_max_level(Into::<tracing::Level>::into(cli.log_level.clone()))
-        .init();
-    }
+        tracing_subscriber::FmtSubscriber::builder()
+            .with_max_level(Into::<tracing::Level>::into(config.log_level.clone()))
+            .init();
     }
     Ok(())
 }

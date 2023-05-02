@@ -1,5 +1,5 @@
-use crate::logger::LogLevel;
-use clap::Parser;
+use crate::{config::Config, logger::LogLevel};
+use clap::{Parser, Subcommand};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -10,9 +10,14 @@ pub enum CliError {
     InvaidAddress(String),
 }
 
-#[derive(Debug, Clone, Default, Parser)]
-#[command(author,version,about,long_about = None)]
-pub struct Cli {
+#[derive(Debug, Subcommand)]
+pub enum CreateCommands {
+    CRD,
+    Application,
+}
+
+#[derive(Debug, clap::Args)]
+pub struct StartCommandArgs {
     ///async treadpool size
     #[arg(short, long, default_value_t = 8)]
     pub num_threads: usize,
@@ -25,20 +30,26 @@ pub struct Cli {
     #[arg(short, long, default_value_t = String::from("0.0.0.0:3000"))]
     pub address: String,
 
-    #[cfg(feature = "trace")]
-    #[arg(short, long, default_value_t = String::from("http://localhost:4317"))]
-    pub otlp_url: String,
+    #[arg(short, long)]
+    pub otlp_url: Option<String>,
 }
 
-impl Cli {
-    pub fn validate(&self) -> Result<(), CliError> {
-        if self.num_threads > 8 {
-            return Err(CliError::ThreadLimit(self.num_threads));
-        }
-
-        if self.address.parse::<std::net::SocketAddr>().is_err() {
-            return Err(CliError::InvaidAddress(self.address.clone()));
-        }
-        Ok(())
+impl Into<Config> for StartCommandArgs {
+    fn into(self) -> Config {
+        Config::new(
+            Some(self.num_threads),
+            Some(self.log_level),
+            Some(self.address),
+            self.otlp_url,
+        )
     }
+}
+
+#[derive(Debug, Parser)]
+#[command(author,version,about,long_about = None)]
+pub enum Cli {
+    Start(StartCommandArgs),
+
+    #[clap(subcommand)]
+    Create(CreateCommands),
 }

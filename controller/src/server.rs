@@ -1,4 +1,4 @@
-use crate::routes::configure_routes;
+use crate::{config::Config, routes::configure_routes};
 use axum::Router;
 use futures::StreamExt;
 use k8s_openapi::api::apps::v1::Deployment;
@@ -39,7 +39,7 @@ pub fn set_layers(router: Router) -> Router {
     router
 }
 
-pub async fn create_server(cli: crate::cli::Cli) -> Result<(), ServerError> {
+pub async fn create_server(config: Config) -> Result<(), ServerError> {
     let client = Client::try_default().await?;
     let api: Api<Deployment> = Api::all(client);
 
@@ -54,12 +54,12 @@ pub async fn create_server(cli: crate::cli::Cli) -> Result<(), ServerError> {
             tracing::info!("{} in namespace {}", name, namespace);
         });
 
-    let addr: SocketAddr = cli.address.parse().unwrap();
+    let addr: SocketAddr = config.address.parse().unwrap();
     let mut router = configure_routes();
     router = set_layers(router);
     router = router.layer(Extension(reader.clone()));
 
-    tracing::info!("Server Started with address: {:?}", cli.address.clone());
+    tracing::info!("Server Started with address: {:?}", config.address.clone());
     let server = axum::Server::bind(&addr)
         .serve(router.into_make_service())
         .with_graceful_shutdown(async {
