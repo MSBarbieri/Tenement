@@ -1,10 +1,4 @@
 use axum::{http::StatusCode, response::IntoResponse, routing::get, Json, Router};
-use k8s_openapi::api::core::v1::Service;
-use kube::{
-    api::ListParams,
-    core::{ObjectList, PartialObjectMeta},
-    Api, Client,
-};
 use thiserror::Error;
 use tracing::*;
 
