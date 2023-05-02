@@ -3,6 +3,7 @@
 <!--Badges-->
 ![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/MSbarbieri/hubify/core.yml?branch=main&style=for-the-badge)
 ![Codecov](https://img.shields.io/codecov/c/github/msbarbieri/hubify?style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/msbarbieri/hubify?style=for-the-badge)
 <!--End Badges-->
 
 inspired by applications like
