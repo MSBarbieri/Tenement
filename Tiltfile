@@ -30,9 +30,10 @@ docker_build(
   target='dev',
   only=['src','Cargo.toml','Cargo.lock'],
   live_update=[
-    sync('./controller/src', '/hubify-controller/src'),
-    sync('./controller/Cargo.toml', '/hubify-controller/Cargo.toml'),
-    sync('./controller/Cargo.lock', '/hubify-controller/Cargo.lock'),
+    sync('./crates/controller/src', '/hubify-controller/src'),
+    sync('./crates/common', '/common'),
+    sync('./crates/controller/Cargo.toml', '/hubify-controller/Cargo.toml'),
+    sync('./crates/controller/Cargo.lock', '/hubify-controller/Cargo.lock'),
   ])
 
 docker_build(

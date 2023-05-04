@@ -1,6 +1,5 @@
-use clap::ValueEnum;
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Default, ValueEnum)]
-
+use serde::Deserialize;
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Default, Deserialize)]
 pub enum LogLevel {
     #[default]
     Debug,

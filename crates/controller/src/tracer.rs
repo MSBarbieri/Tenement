@@ -1,10 +1,11 @@
-use cfg_if::cfg_if;
 use thiserror::Error;
 
 use crate::config::Config;
-cfg_if! {
-if #[cfg(feature = "trace")] {
 use opentelemetry::sdk::trace::Tracer;
+use opentelemetry::{
+    sdk::{propagation::TraceContextPropagator, trace::Sampler, Resource},
+    trace::TraceError,
+};
 use tracing::{subscriber::SetGlobalDefaultError, Subscriber};
 use tracing_opentelemetry::OpenTelemetryLayer;
 use tracing_subscriber::filter::EnvFilter;
@@ -12,14 +13,8 @@ use tracing_subscriber::fmt::format::FmtSpan;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::registry::LookupSpan;
 use tracing_subscriber::Layer;
-use opentelemetry::{
-    sdk::{propagation::TraceContextPropagator, trace::Sampler, Resource},
-    trace::TraceError,
-};
 
 type BoxError = Box<dyn std::error::Error + Send + Sync>;
-}
-}
 
 #[derive(Error, Debug)]
 pub enum TracingError {
@@ -31,9 +26,7 @@ pub enum TracingError {
     SetGlobalDefaultError(#[from] SetGlobalDefaultError),
 }
 
-cfg_if! {
-if #[cfg(feature = "trace")] {
-pub fn build_logger_text<S>() -> Box<dyn Layer<S> + Send + Sync + 'static>
+fn build_logger_text<S>() -> Box<dyn Layer<S> + Send + Sync + 'static>
 where
     S: Subscriber + for<'a> LookupSpan<'a>,
 {
@@ -44,7 +37,9 @@ where
     )
 }
 
-pub fn build_loglevel_filter_layer(config: &Config) -> tracing_subscriber::filter::EnvFilter {
+pub(crate) fn build_loglevel_filter_layer(
+    config: &Config,
+) -> tracing_subscriber::filter::EnvFilter {
     // filter what is output on log (fmt)
     // std::env::set_var("RUST_LOG", "warn,axum_tracing_opentelemetry=info,otel=debug");
     let log_level = config.log_level.to_string();
@@ -83,7 +78,11 @@ fn infer_protocol_and_endpoint(
     (protocol, endpoint)
 }
 
-pub fn init_tracer<F>(config: &Config, resource: Resource, transform: F) -> Result<Tracer, TraceError>
+pub(crate) fn init_tracer<F>(
+    config: &Config,
+    resource: Resource,
+    transform: F,
+) -> Result<Tracer, TraceError>
 where
     F: FnOnce(opentelemetry_otlp::OtlpTracePipeline) -> opentelemetry_otlp::OtlpTracePipeline,
 {
@@ -91,7 +90,8 @@ where
     use opentelemetry_otlp::WithExportConfig;
 
     opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
-    let (protocol, endpoint) = infer_protocol_and_endpoint((None, Some(config.otlp_url.clone().unwrap())));
+    let (protocol, endpoint) =
+        infer_protocol_and_endpoint((None, Some(config.otlp_url.clone().unwrap())));
     tracing::debug!(target: "otel::setup", OTEL_EXPORTER_OTLP_ENDPOINT = endpoint);
     tracing::debug!(target: "otel::setup", OTEL_EXPORTER_OTLP_PROTOCOL = protocol);
     let exporter: SpanExporterBuilder = match protocol.as_str() {
@@ -118,7 +118,9 @@ where
     pipeline.install_batch(opentelemetry::runtime::Tokio)
 }
 
-pub fn build_otel_layer<S>(config: &Config) -> Result<OpenTelemetryLayer<S, Tracer>, BoxError>
+pub(crate) fn build_otel_layer<S>(
+    config: &Config,
+) -> Result<OpenTelemetryLayer<S, Tracer>, BoxError>
 where
     S: Subscriber + for<'a> LookupSpan<'a>,
 {
@@ -128,10 +130,8 @@ where
     init_propagator()?;
     Ok(tracing_opentelemetry::layer().with_tracer(otel_tracer))
 }
-}
-}
 
-pub fn setup_tracing(config: &mut Config) -> Result<(), TracingError> {
+pub(crate) fn setup_tracing(config: &mut Config) -> Result<(), TracingError> {
     if config.otlp_url.is_some() {
         let subscriber = tracing_subscriber::registry()
             .with(build_loglevel_filter_layer(config))

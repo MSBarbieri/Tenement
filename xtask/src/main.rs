@@ -1,3 +1,5 @@
+///! Xtask
+///
 mod scripts;
 mod utils;
 use anyhow::Result;

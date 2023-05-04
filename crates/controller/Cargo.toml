@@ -6,9 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+common = { path = "../common/" }
 axum = { version = "0.6.11", features = ["ws"] }
-cfg-if = "1.0.0"
-clap = { version = "4.1.11", features = ["derive"] }
 env_logger = "0.10.0"
 hyper = { version = "0.14.25", features = ["full"] }
 log = { version = "0.4.17", features = ["serde", "std"] }
@@ -43,7 +42,9 @@ backoff = "0.4.0"
 futures = "0.3.28"
 pretty_env_logger = "0.4.0"
 serde_yaml = "0.9.21"
-schemars = "0.8.12"
+schemars = { version = "0.8.12", features = ["url", "chrono"] }
+url = { version = "2.3.1", features = ["serde"] }
+envy = "0.4.2"
 
 
 [features]
