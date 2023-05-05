@@ -1,8 +1,12 @@
 [workspace]
 default-members = [
-  "controller",
+  "crates/cli",
+  "crates/common",
+  "crates/controller",
 ]
 members = [
-  "controller",
+  "crates/cli",
+  "crates/common",
+  "crates/controller",
   "xtask"
 ]

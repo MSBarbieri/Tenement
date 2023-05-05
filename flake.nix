@@ -1,6 +1,5 @@
 {
   inputs = {
-    naersk.url = "github:nix-community/naersk/master";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
     fenix = {
@@ -13,7 +12,6 @@
     { self
     , nixpkgs
     , utils
-    , naersk
     , fenix
     , pre-commit-hooks
     ,
@@ -26,14 +24,8 @@
           fenix.overlays.default
         ];
       };
-      naersk-lib = pkgs.callPackage naersk { };
     in
     {
-      defaultPackage = naersk-lib.buildPackage {
-        src = ./.;
-        buildInputs = [ ];
-        RUST_LOG = "trace";
-      };
       checks = {
         pre-commit-check = pre-commit-hooks.lib.${system}.run {
           src = ./.;
@@ -49,7 +41,7 @@
         };
       };
 
-      devShell = nixpkgs.legacyPackages.${system}.mkShell {
+      devShells.default = pkgs.mkShell {
         inherit (self.checks.${system}.pre-commit-check) shellHook;
 
         buildInputs = with pkgs; [
