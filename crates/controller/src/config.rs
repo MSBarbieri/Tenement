@@ -9,7 +9,7 @@ fn default_log_level() -> LogLevel {
     LogLevel::default()
 }
 fn default_address() -> String {
-    "0.0.0.0:30000".to_string()
+    "0.0.0.0:3000".to_string()
 }
 
 #[derive(Deserialize, Debug)]

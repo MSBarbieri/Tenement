@@ -9,13 +9,7 @@
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
   };
   outputs =
-    { self
-    , nixpkgs
-    , utils
-    , fenix
-    , pre-commit-hooks
-    ,
-    }:
+    { self, nixpkgs, utils, fenix, pre-commit-hooks, ... }:
     utils.lib.eachDefaultSystem (system:
     let
       pkgs = import nixpkgs {
@@ -32,11 +26,6 @@
           hooks = {
             nixpkgs-fmt.enable = true;
             rustfmt.enable = true;
-          };
-          settings = {
-            clippy = {
-              denyWarnings = true;
-            };
           };
         };
       };
@@ -60,11 +49,7 @@
           tilt
           kind
         ];
-
-        RUST_LOG = "debug";
-
         nativeBuildInputs = [ pkgs.pkg-config ];
-        RUST_SRC_PATH = pkgs.rustPlatform.rustLibSrc;
       };
     });
 }

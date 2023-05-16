@@ -13,14 +13,14 @@ use url::Url;
 )]
 #[kube(status = "ApplicationStatus")]
 pub struct ApplicationSpec {
-    name: String,
-    version: Option<String>,
-    description: Option<String>,
-    icon: Option<String>,
-    url: Url,
-    categories: Option<Vec<String>>,
-    openapi_endpoint: Option<Url>,
-    repository: Option<Repository>,
+    pub name: String,
+    pub version: Option<String>,
+    pub description: Option<String>,
+    pub icon: Option<String>,
+    pub url: Url,
+    pub categories: Option<Vec<String>>,
+    pub openapi_endpoint: Option<Url>,
+    pub repository: Option<Repository>,
 }
 
 #[derive(CustomResource, JsonSchema, Deserialize, Serialize, Debug, Clone)]
