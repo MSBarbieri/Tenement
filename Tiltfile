@@ -19,35 +19,35 @@ k8s_resource('hubify-controller',
              labels=['hubify-controller'],
 )
 
-k8s_resource('frontend',
-             port_forwards=['5173:5173'],
-             labels=['frontend'],
-)
+# k8s_resource('frontend',
+#              port_forwards=['5173:5173'],
+#              labels=['frontend'],
+# )
 
 docker_build(
   'hubify-controller',
-  context='./controller',
+  context='.',
+  dockerfile='crates/controller/Dockerfile',
   target='dev',
-  only=['src','Cargo.toml','Cargo.lock'],
+  only=['crates/controller/src','crates/controller/Cargo.toml','crates/common'],  
   live_update=[
     sync('./crates/controller/src', '/hubify-controller/src'),
-    sync('./crates/common', '/common'),
     sync('./crates/controller/Cargo.toml', '/hubify-controller/Cargo.toml'),
-    sync('./crates/controller/Cargo.lock', '/hubify-controller/Cargo.lock'),
-  ])
+    sync('./crates/common', '/common'),
+ ])
 
-docker_build(
-  'frontend',
-  context='./webui',
-  target='dev',
-  only=['package.json', 'package-lock.json', 
-    'src', 'public',
-    'vite.config.ts', 'tsconfig.json'
-  ],
-  live_update=[
-    sync('./webui/src', '/app/src'),
-    sync('./webui/public', '/app/public'),
-    sync('./webui/package.json', '/app/package.json'),
-    sync('./webui/package-lock.json', '/app/package-lock.json'),
-    sync('./webui/vite.config.ts', '/app/vite.config.ts'),
-  ])
+#docker_build(
+#  'frontend',
+#  context='./webui',
+#  target='dev',
+#  only=['package.json', 'package-lock.json', 
+#    'src', 'public',
+#    'vite.config.ts', 'tsconfig.json'
+#  ],
+#  live_update=[
+#    sync('./webui/src', '/app/src'),
+#    sync('./webui/public', '/app/public'),
+#    sync('./webui/package.json', '/app/package.json'),
+#    sync('./webui/package-lock.json', '/app/package-lock.json'),
+#    sync('./webui/vite.config.ts', '/app/vite.config.ts'),
+#  ])

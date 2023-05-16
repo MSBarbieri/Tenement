@@ -1,8 +1,9 @@
 FROM rust:1.69 as builder
 RUN USER=root cargo new --bin hubify-controller
+RUN mkdir /common
 WORKDIR /hubify-controller
 COPY ./Cargo.toml ./Cargo.toml
-COPY ./Cargo.lock ./Cargo.lock
+# COPY ../common /common 
 RUN apt-get update && apt-get install -y build-essential protobuf-compiler
 RUN cargo build --release
 RUN rm -rf ./src
@@ -31,12 +32,12 @@ CMD ["./hubify-controller"]
 FROM rust:1.69 as dev
 RUN cargo new --bin hubify-controller
 WORKDIR /hubify-controller
-COPY ./Cargo.toml ./Cargo.toml
-COPY ./Cargo.lock ./Cargo.lock
+COPY crates/controller/Cargo.toml ./Cargo.toml
+COPY crates/common /common 
 RUN apt-get update && apt-get install -y build-essential protobuf-compiler
 RUN cargo build
 RUN cargo install cargo-watch
 RUN rm -rf ./src
-COPY ./src ./src
+COPY crates/controller/src ./src
 RUN rm -f ./target/debug/hubify-controller*
 CMD ["cargo","watch", "-x","run --no-default-features"]

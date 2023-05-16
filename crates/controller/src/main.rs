@@ -1,5 +1,5 @@
-///! Hubify Controller
-///
+//!Hubify Controller
+//
 mod config;
 mod logger;
 mod routes;
@@ -38,6 +38,7 @@ fn main() -> Result<(), StartError> {
     builder.worker_threads(config.num_threads);
     builder.thread_name("hubify_controller");
     builder.enable_all();
+
     let rt = builder.build()?;
     rt.block_on(start(config))?;
     Ok(())
