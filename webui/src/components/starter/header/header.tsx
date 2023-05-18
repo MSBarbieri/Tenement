@@ -1,5 +1,5 @@
 import { component$ } from '@builder.io/qwik';
-import { QwikLogo } from '../icons/qwik';
+import { HubifierLogo } from '../icons/hubifier';
 import styles from './header.module.css';
 
 export default component$(() => {
@@ -8,7 +8,8 @@ export default component$(() => {
       <div class={['container', styles.wrapper]}>
         <div class={styles.logo}>
           <a href="/" title="qwik">
-            <QwikLogo height={50} width={143} />
+            <HubifierLogo width={35} height={35} />
+            {/* <HubifierLogo /> */}
           </a>
         </div>
         <ul>

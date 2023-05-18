@@ -1,10 +1,17 @@
 # Hubify
-
+<br>
+<p align="center">
+  <img alt="Hubifier Logo" width="400" src="https://raw.githubusercontent.com/hubifier/hubifier/main/.github/assets/full_logo.svg" />
+</p>
+<br>
+<p align = "center">
 <!--Badges-->
 ![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/MSbarbieri/hubify/core.yml?branch=main&style=for-the-badge)
 ![Codecov](https://img.shields.io/codecov/c/github/msbarbieri/hubify?style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/msbarbieri/hubify?style=for-the-badge)
 <!--End Badges-->
+</p>
+<br>
 
 inspired by applications like
 [Backstage](https://github.com/backstage/backstage),[Homepage](https://github.com/benphelps/homepage)
