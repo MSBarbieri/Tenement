@@ -8,7 +8,8 @@ export default component$(() => {
       <div class={['container', styles.wrapper]}>
         <div class={styles.logo}>
           <a href="/" title="qwik">
-            <HubifierLogo />
+            <HubifierLogo width={35} height={35} />
+            {/* <HubifierLogo /> */}
           </a>
         </div>
         <ul>
