@@ -1,7 +1,7 @@
 # Hubify
 <br>
 <p align="center">
-  <img alt="Hubifier Logo" width="400" src="https://raw.githubusercontent.com/hubifier/hubifier/main/.github/assets/full_logo.svg" />
+  <img alt="Hubifier Logo" width="400" src="https://raw.githubusercontent.com/hubifier/hubifier/main/.github/assets/logo.png" />
 </p>
 <br>
 <p align = "center">
