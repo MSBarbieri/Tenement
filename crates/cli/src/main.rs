@@ -43,6 +43,7 @@ pub enum CreateCommands {
 }
 
 fn main() -> Result<()> {
+    pretty_env_logger::init();
     match Cli::parse() {
         Cli::Create(cmds) => {
             match cmds {

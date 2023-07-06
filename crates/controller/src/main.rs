@@ -1,5 +1,7 @@
 //!Hubify Controller
 //
+#[cfg(all(feature = "db", feature = "k8s"))]
+compile_error!("feature \"db\" and feature \"k8s\" cannot be enabled at the same time");
 mod config;
 mod logger;
 mod routes;
@@ -9,10 +11,9 @@ mod tracer;
 use config::Config;
 use envy::Error as EnvyError;
 use server::ServerError;
-use thiserror::Error;
 use tracer::TracingError;
 
-#[derive(Error, Debug)]
+#[derive(thiserror::Error, Debug)]
 pub enum StartError {
     #[error("start server error '{0}")]
     ServerError(#[from] ServerError),

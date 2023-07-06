@@ -1,5 +1,3 @@
-use thiserror::Error;
-
 use crate::config::Config;
 use opentelemetry::sdk::trace::Tracer;
 use opentelemetry::{
@@ -16,7 +14,7 @@ use tracing_subscriber::Layer;
 
 type BoxError = Box<dyn std::error::Error + Send + Sync>;
 
-#[derive(Error, Debug)]
+#[derive(thiserror::Error, Debug)]
 pub enum TracingError {
     #[error("Failed to connect with opentelemetry '{0}'")]
     ConnectionFailed(#[from] BoxError),
