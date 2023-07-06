@@ -92,10 +92,10 @@ fn generate_crds(settings: &Settings, values: &mut Vec<Value>) -> Result<()> {
     }
     {
         // Custom Resources
-        let mut app = common::k8s::crd::Application::crd();
+        let mut app = hb_common::k8s::crd::Application::crd();
         app.metadata.namespace = Some(settings.namespace.clone());
         values.push(serde_yaml::to_value(&app)?);
-        let mut cmds = common::k8s::crd::Command::crd();
+        let mut cmds = hb_common::k8s::crd::Command::crd();
         cmds.metadata.namespace = Some(settings.namespace.clone());
         values.push(serde_yaml::to_value(&cmds)?);
     }

@@ -8,7 +8,7 @@ repository = { workspace = true }
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-common = {path = "../common/", defeault-features = false, features = ["k8s","db"] }
+hb-common = {path = "../common/", defeault-features = false, features = ["k8s","db"] }
 k8s-openapi = { version = "0.18.0", features = ["v1_26"] }
 kube = { version = "0.82.2", features = ["runtime", "derive"] }
 tokio = { version = "1.28.0", features = ["full"] }

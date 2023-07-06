@@ -6,21 +6,21 @@ pub enum K8SERROR {
     #[error("k8s error")]
     ClientError(#[from] kube::Error),
     #[error("Common error: {0}")]
-    CommonError(#[from] common::k8s::methods::CommonError),
+    CommonError(#[from] hb_common::k8s::methods::CommonError),
 }
 pub type Result<T> = std::result::Result<T, K8SERROR>;
 
 #[instrument]
-pub async fn get_services() -> Result<Json<Vec<common::models::Application>>> {
+pub async fn get_services() -> Result<Json<Vec<hb_common::models::Application>>> {
     let client = kube::Client::try_default().await?;
-    let apps = common::k8s::methods::get_applications(client).await?;
+    let apps = hb_common::k8s::methods::get_applications(client).await?;
     Ok(Json(apps))
 }
 
 #[instrument]
-pub async fn get_commands() -> Result<Json<Vec<common::models::Command>>> {
+pub async fn get_commands() -> Result<Json<Vec<hb_common::models::Command>>> {
     let client = kube::Client::try_default().await?;
-    let commands = common::k8s::methods::get_commnads(client).await?;
+    let commands = hb_common::k8s::methods::get_commnads(client).await?;
     Ok(Json(commands))
 }
 

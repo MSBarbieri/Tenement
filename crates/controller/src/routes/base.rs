@@ -4,19 +4,19 @@ use tracing::*;
 #[derive(thiserror::Error, Debug)]
 pub enum BaseError {
     #[error("Common error:")]
-    BaseError(#[from] common::db::CommonError),
+    BaseError(#[from] hb_common::db::CommonError),
 }
 pub type Result<T> = std::result::Result<T, BaseError>;
 
 #[instrument]
-pub async fn get_services() -> Result<Json<Vec<common::models::Application>>> {
-    let apps = common::db::get_applications().await?;
+pub async fn get_services() -> Result<Json<Vec<hb_common::models::Application>>> {
+    let apps = hb_common::db::get_applications().await?;
     Ok(Json(apps))
 }
 
 #[instrument]
-pub async fn get_commands() -> Result<Json<Vec<common::models::Command>>> {
-    let cmds = common::db::get_commnads().await?;
+pub async fn get_commands() -> Result<Json<Vec<hb_common::models::Command>>> {
+    let cmds = hb_common::db::get_commnads().await?;
     Ok(Json(cmds))
 }
 

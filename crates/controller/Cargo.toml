@@ -8,7 +8,7 @@ repository = { workspace = true }
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-common = { path = "../common/",default-features = false }
+hb-common = { path = "../common/",default-features = false }
 axum = { version = "0.6.11", features = ["ws"] }
 hyper = { version = "0.14.25", features = ["full"] }
 tokio = { version = "1.26.0", features = ["full"] }
@@ -46,6 +46,6 @@ serde.workspace = true
 
 [features]
 default = ["db"]
-db = ["common/db"]
-k8s = ["common/k8s"]
+db = ["hb-common/db"]
+k8s = ["hb-common/k8s"]
 
