@@ -31,7 +31,13 @@
       };
 
       devShells.default = pkgs.mkShell {
-        inherit (self.checks.${system}.pre-commit-check) shellHook;
+        shellHook = ''
+           set -a # automatically export all variables
+           source .env
+           set +a
+
+          ${(self.checks.${system}).pre-commit-check.shellHook}
+        '';
 
         buildInputs = with pkgs; [
           (pkgs.fenix.complete.withComponents [

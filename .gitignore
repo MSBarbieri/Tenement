@@ -6,3 +6,6 @@
 # Added by cargo
 
 /target
+.env
+dev.db
+dev.db-journal
