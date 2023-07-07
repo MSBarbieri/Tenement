@@ -4,6 +4,7 @@ version = { workspace = true }
 edition = { workspace = true } 
 license = { workspace = true }
 repository = { workspace = true }
+readme = { workspace = true } 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -37,6 +38,8 @@ futures = "0.3.28"
 envy = "0.4.2"
 cfg-if = "1.0.0"
 
+k8s-openapi = { workspace = true, optional = true }
+kube = {workspace = true, optional = true }
 thiserror.workspace = true
 url.workspace = true
 log.workspace = true
@@ -47,5 +50,5 @@ serde.workspace = true
 [features]
 default = ["db"]
 db = ["hb-common/db"]
-k8s = ["hb-common/k8s"]
+k8s = ["hb-common/k8s","dep:k8s-openapi", "dep:kube"]
 

@@ -1,21 +1,21 @@
 [package]
 name = "hb-common"
-version = { workspace = true } 
-edition = { workspace = true } 
-license = { workspace = true }
-repository = { workspace = true }
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
 
-[[bin]]
-name = "prisma"
-path = "src/prisma.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 chrono = { version = "0.4.24", features = ["serde"] }
-k8s-openapi = { version = "0.18.0", features = ["v1_26"], optional = true }
-kube = { version = "0.82.2", features = ["runtime", "derive"],optional = true }
 schemars = { version = "0.8.12", features = ["url", "chrono"] }
 
+k8s-openapi = { workspace = true, optional = true }
+kube = {workspace = true, optional = true }
+hb-prisma = { path = "../hb-prisma", optional = true }
+prisma-client-rust-cli = { workspace = true, optional = true }
 prisma-client-rust = { workspace = true, optional = true }
 thiserror.workspace = true
 url.workspace = true
@@ -23,9 +23,10 @@ log.workspace = true
 serde_json.workspace = true
 serde_yaml.workspace = true
 serde.workspace = true
-[dependencies.dev]
-prisma-client-rust-cli.workspace = true
+[dev-dependencies]
+tokio = { version = "1.29.1", features = ["full"] }
+
 [features]
 default = ["db"]
-db = ["dep:prisma-client-rust"]
+db = ["dep:prisma-client-rust", "dep:prisma-client-rust-cli", "dep:hb-prisma"]
 k8s = ["dep:k8s-openapi", "dep:kube"]

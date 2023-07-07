@@ -36,3 +36,20 @@ pub async fn get_commnads() -> Result<Vec<Command>> {
 
     Ok(vec![command])
 }
+
+#[cfg(test)]
+mod test {
+    use hb_prisma::PrismaClient;
+    use prisma_client_rust::{NewClientError, PrismaClient};
+
+    #[tokio::test]
+    async fn test_get_applications() {
+        let client: PrismaClient = PrismaClient::_builder()
+            .build()
+            .await
+            .expect("failed to create client");
+        let apps = client.application().find_many(vec![]).exec().await;
+        println!("{:?}", apps);
+        // .expect("getting applications");
+    }
+}

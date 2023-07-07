@@ -1,0 +1,18 @@
+[package]
+name = "hb-prisma"
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "prisma"
+path = "src/prisma.rs"
+
+[dependencies]
+prisma-client-rust-cli = { workspace = true, features = ["sqlite", "postgresql"] } 
+prisma-client-rust = { workspace = true, features = ["sqlite", "postgresql"] }
+serde.workspace = true

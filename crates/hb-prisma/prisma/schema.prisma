@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+datasource db {
+    provider = env("DATABASE_PROVIDER")
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    // Corresponds to the cargo alias created earlier
+    provider      = "cargo prisma"
+    // The location to generate the client. Is relative to the position of the schema
+    output        = "../src/models.rs"
+}
+
+model Application {
+  id Int @id @default(autoincrement())
+  name String
+  version String?
+  icon String?
+  icon_hb String?
+  url String
+  openapi_endpoint String?
+  repositories Repositories_x_Applications[]
+}
+
+model Repository {
+  id Int @id @default(autoincrement())
+  name String 
+  url String @unique
+  access_token String?
+  docs_url String?
+  docs_dir String?
+  applications Repositories_x_Applications[]
+}
+
+model Repositories_x_Applications {
+  application Application @relation(fields: [application_id], references: [id])
+  application_id Int
+  repository Repository @relation(fields: [repository_id], references: [id])
+  repository_id Int
+  assignedAt DateTime @default(now())
+
+  @@id([application_id, repository_id])
+}

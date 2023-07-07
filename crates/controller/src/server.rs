@@ -12,6 +12,7 @@ pub enum ServerError {
     CacheDatabesNotFound,
     #[error("Server creation Error")]
     AxumError(#[from] hyper::Error),
+    #[cfg(feature = "k8s")]
     #[error("k8s error")]
     ClientError(#[from] kube::Error),
     #[error("Unknown Start Server Error")]
